@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+<<<<<<< HEAD
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -52,4 +53,10 @@ public class FilmController {
                 .orElse(0);
         return ++currentMaxId;
     }
+=======
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class FilmController {
+>>>>>>> origin/main
 }

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,10 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validators.Validators;
 
 import java.time.LocalDate;
+=======
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+>>>>>>> origin/main
 
 @SpringBootTest
 class FilmorateApplicationTests {
@@ -18,6 +23,7 @@ class FilmorateApplicationTests {
 	void contextLoads() {
 	}
 
+<<<<<<< HEAD
 	@Test
 	void createNewFilmValidatorTest() {
 		Film film = Film.builder()
@@ -162,4 +168,6 @@ class FilmorateApplicationTests {
 
 		assertThrows(ConditionsNotMetException.class, () -> Validators.validateUser(user));
 	}
+=======
+>>>>>>> origin/main
 }
