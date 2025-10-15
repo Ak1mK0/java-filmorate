@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Builder
 public class User {
     private Long id;
-//    @NonNull
+    //    @NonNull
 //    @NotBlank
 //    @Email (message = "Не корректная электронная почта")
     private String email;
