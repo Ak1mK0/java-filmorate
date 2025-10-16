@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validators.Validators;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,7 +25,6 @@ public class UserController {
 
     @PostMapping
     public User addNewUser(@Valid @RequestBody User user) {
-        Validators.validateUser(user);
         user.setId(getNextId());
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
@@ -42,7 +40,6 @@ public class UserController {
             log.warn("Пользователь не найден");
             throw new ConditionsNotMetException("Такого пользователя нет");
         }
-        Validators.validateUser(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
