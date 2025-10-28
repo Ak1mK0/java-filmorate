@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.ConditionsNotMetException;
+import ru.yandex.practicum.filmorate.exception.objectNotFindException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
@@ -20,6 +20,7 @@ public class UserService {
     private final UserStorage userStorage;
 
     public User addNewUser(User user) {
+        log.trace("---------User addNewUser command---------");
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -27,9 +28,10 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        Optional<User> optionalUser= userStorage.get(user.getId());
+        log.trace("---------User updateUser command---------");
+        Optional<User> optionalUser = userStorage.get(user.getId());
         if (optionalUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + user.getId() + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + user.getId() + " не существует");
         }
         User oldUser = optionalUser.get();
         if (user.getName() == null || user.getName().isBlank()) {
@@ -40,29 +42,33 @@ public class UserService {
     }
 
     public void removeUser(User user) {
+        log.trace("---------User removeUser command---------");
         userStorage.remove(user.getId());
     }
 
     public User findUserById(User user) {
-        Optional<User> optionalUser= userStorage.get(user.getId());
+        log.trace("---------User findUserById command---------");
+        Optional<User> optionalUser = userStorage.get(user.getId());
         if (optionalUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + user.getId() + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + user.getId() + " не существует");
         }
         return optionalUser.get();
     }
 
     public Collection<User> findAll() {
+        log.trace("---------User findAll command---------");
         return userStorage.getAll();
     }
 
     public void addFriend(long id, long friendId) {
+        log.trace("---------User addFriend command---------");
         Optional<User> optionalUser = userStorage.get(id);
         if (optionalUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + id + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + id + " не существует");
         }
-        Optional<User> optionalFriendUser= userStorage.get(friendId);
+        Optional<User> optionalFriendUser = userStorage.get(friendId);
         if (optionalFriendUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + friendId + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + friendId + " не существует");
         }
         User idUser = optionalUser.get();
         Set<Long> idUserFriendsList = idUser.getFriends();
@@ -74,14 +80,16 @@ public class UserService {
     }
 
     public void removeFriend(long id, long friendId) {
+        log.trace("---------User removeFriend command---------");
         Optional<User> optionalUser = userStorage.get(id);
         if (optionalUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + id + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + id + " не существует");
         }
-        Optional<User> optionalFriendUser= userStorage.get(friendId);
+        Optional<User> optionalFriendUser = userStorage.get(friendId);
         if (optionalFriendUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + friendId + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + friendId + " не существует");
         }
+
         User idUser = optionalUser.get();
         Set<Long> idUserFriendsList = idUser.getFriends();
         idUserFriendsList.remove(friendId);
@@ -91,10 +99,11 @@ public class UserService {
         friendUserFriendsList.remove(id);
     }
 
-    public Collection<User>  getFriendList(long id) {
+    public Collection<User> getUserFriendList(long id) {
+        log.trace("---------User getUserFriendList command---------");
         Optional<User> optionalUser = userStorage.get(id);
         if (optionalUser.isEmpty()) {
-            throw new ConditionsNotMetException("Пользователя с id: " + id + " не существует");
+            throw new objectNotFindException("Пользователя с id: " + id + " не существует");
         }
         User user = optionalUser.get();
         Set<Long> friendList = user.getFriends();

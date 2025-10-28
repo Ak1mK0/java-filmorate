@@ -41,7 +41,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     public Collection<Film> getAll() {
-        log.info("Получение списка всех фильмов.");
+        log.trace("Получение списка всех фильмов.");
         return films.values();
     }
 
