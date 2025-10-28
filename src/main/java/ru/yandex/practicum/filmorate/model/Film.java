@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.annotation.ValidateDate;
 import ru.yandex.practicum.filmorate.annotation.ValidateDate.BeforeOrAfter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
@@ -33,4 +34,5 @@ public class Film {
     @Min(value = 1,
             message = "Длительность не может быть отрицательно")
     private Long duration;
+    private Set<Long> like;
 }
