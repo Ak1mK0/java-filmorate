@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.annotation.ValidateDate.BeforeOrAfter;
 import ru.yandex.practicum.filmorate.annotation.ValidateNoBlank;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
