@@ -18,7 +18,8 @@ import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 import java.time.LocalDate;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class FilmorateFilmApplicationTests {
@@ -51,41 +52,41 @@ class FilmorateFilmApplicationTests {
         }
     }
 
-	@Test
-	void createNewFilmValidatorTest() {
-		filmController.addNewFilm(testFilm);
+    @Test
+    void createNewFilmValidatorTest() {
+        filmController.addNewFilm(testFilm);
         assertTrue(filmController.findAll().contains(testFilm));
-	}
+    }
 
-	@Test
-	void emptyFilmNameValidatorTest() {
-		testFilm.setName(null);
+    @Test
+    void emptyFilmNameValidatorTest() {
+        testFilm.setName(null);
 
-		readException();
-		assertEquals("Название фильма не может быть пустым", messageException);
-	}
+        readException();
+        assertEquals("Название фильма не может быть пустым", messageException);
+    }
 
-	@Test
-	void blankFilmNameValidatorTest() {
-		testFilm.setName(" ");
+    @Test
+    void blankFilmNameValidatorTest() {
+        testFilm.setName(" ");
 
-		readException();
-		assertEquals("Название фильма не может быть пустым", messageException);
-	}
+        readException();
+        assertEquals("Название фильма не может быть пустым", messageException);
+    }
 
-	@Test
-	void longDescriptionFilmNameValidatorTest() {
-		testFilm.setDescription("A".repeat(201));
+    @Test
+    void longDescriptionFilmNameValidatorTest() {
+        testFilm.setDescription("A".repeat(201));
 
-		readException();
-		assertEquals("Описание должно содержать до 200 символов", messageException);
-	}
+        readException();
+        assertEquals("Описание должно содержать до 200 символов", messageException);
+    }
 
-	@Test
-	void wrongReleaseDateFilmNameValidatorTest() {
-		testFilm.setReleaseDate(LocalDate.of(1895,12,27));
+    @Test
+    void wrongReleaseDateFilmNameValidatorTest() {
+        testFilm.setReleaseDate(LocalDate.of(1895, 12, 27));
 
-		readException();
-		assertEquals("Дата релиза — не раньше 28 декабря 1895 года", messageException);
-	}
+        readException();
+        assertEquals("Дата релиза — не раньше 28 декабря 1895 года", messageException);
+    }
 }

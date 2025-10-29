@@ -9,11 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import java.time.LocalDate;
@@ -34,11 +31,11 @@ class FilmorateUserApplicationTests {
 
     @BeforeEach
     public void beforeEach() {
-		testUser = User.builder()
-				.email("Test@email.ru")
-				.login("login")
-				.name("name")
-				.birthday(LocalDate.of(2000,10,10))
+        testUser = User.builder()
+                .email("Test@email.ru")
+                .login("login")
+                .name("name")
+                .birthday(LocalDate.of(2000, 10, 10))
                 .build();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -52,79 +49,79 @@ class FilmorateUserApplicationTests {
         }
     }
 
-	@Test
-	void correctUserValidatorTest() {
-		userController.addNewUser(testUser);
-		assertTrue(userController.findAll().contains(testUser));
-	}
+    @Test
+    void correctUserValidatorTest() {
+        userController.addNewUser(testUser);
+        assertTrue(userController.findAll().contains(testUser));
+    }
 
-	@Test
-	void emptyUserNameValidatorTest() {
-		testUser.setName("");
-		userController.addNewUser(testUser);
-		assertTrue(userController.findAll().contains(testUser));
-	}
+    @Test
+    void emptyUserNameValidatorTest() {
+        testUser.setName("");
+        userController.addNewUser(testUser);
+        assertTrue(userController.findAll().contains(testUser));
+    }
 
-	@Test
-	void blankUserNameValidatorTest() {
-		testUser.setName(" ");
-		userController.addNewUser(testUser);
-		assertTrue(userController.findAll().contains(testUser));
-	}
+    @Test
+    void blankUserNameValidatorTest() {
+        testUser.setName(" ");
+        userController.addNewUser(testUser);
+        assertTrue(userController.findAll().contains(testUser));
+    }
 
-	@Test
-	void emptyEmailValidatorTest() {
-		testUser.setEmail(null);
+    @Test
+    void emptyEmailValidatorTest() {
+        testUser.setEmail(null);
 
-		readException();
-		assertEquals("Адрес пользователя не может быть пустым", messageException);
-	}
+        readException();
+        assertEquals("Адрес пользователя не может быть пустым", messageException);
+    }
 
-	@Test
-	void blankEmailValidatorTest() {
-		testUser.setEmail(" ");
+    @Test
+    void blankEmailValidatorTest() {
+        testUser.setEmail(" ");
 
-		readException();
-		assertEquals("Не корректный формат электронная почты", messageException);
-	}
+        readException();
+        assertEquals("Не корректный формат электронная почты", messageException);
+    }
 
-	@Test
-	void wrongEmailValidatorTest() {
-		testUser.setEmail("TestEmail.ru");
+    @Test
+    void wrongEmailValidatorTest() {
+        testUser.setEmail("TestEmail.ru");
 
-		readException();
-		assertEquals("Не корректный формат электронная почты", messageException);
-	}
+        readException();
+        assertEquals("Не корректный формат электронная почты", messageException);
+    }
 
-	@Test
-	void wrongEmailConstructionValidatorTest() {
-		testUser.setEmail("TestEmail@.ru");
+    @Test
+    void wrongEmailConstructionValidatorTest() {
+        testUser.setEmail("TestEmail@.ru");
 
-		readException();
-		assertEquals("Не корректный формат электронная почты", messageException);
-	}
+        readException();
+        assertEquals("Не корректный формат электронная почты", messageException);
+    }
 
-	@Test
-	void blankLoginUserValidatorTest() {
-		testUser.setLogin(" ");
+    @Test
+    void blankLoginUserValidatorTest() {
+        testUser.setLogin(" ");
 
-		readException();
-		assertEquals("Логин пользователя не должен содержит пробелы", messageException);
-	}
+        readException();
+        assertEquals("Логин пользователя не должен содержит пробелы", messageException);
+    }
 
-	@Test
-	void emptyLoginUserValidatorTest() {
-		testUser.setLogin(null);
+    @Test
+    void emptyLoginUserValidatorTest() {
+        testUser.setLogin(null);
 
-		readException();
-		assertEquals("Логин пользователя не может быть пустым", messageException);
-	}
+        readException();
+        assertEquals("Логин пользователя не может быть пустым", messageException);
+    }
 
-	@Test
-	void wrongBirthdayUserValidatorTest() {
-		testUser.setBirthday((LocalDate.now().plusDays(1)));
+    @Test
+    void wrongBirthdayUserValidatorTest() {
+        testUser.setBirthday((LocalDate.now().plusDays(1)));
 
-		readException();
-		assertEquals("Дата не может быть в будущем", messageException);
-	}
+        readException();
+        assertEquals("Дата не может быть в будущем", messageException);
+    }
 }
