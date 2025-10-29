@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.objectNotFindException;
+import ru.yandex.practicum.filmorate.exception.ObjectNotFindException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
@@ -27,7 +27,7 @@ public class FilmService {
     public Film updateFilm(Film film) {
         log.trace("Film updateFilm command");
         if (filmStorage.get(film.getId()).isEmpty()) {
-            throw new objectNotFindException("Фильм с именем: " + film.getName() + " не существует");
+            throw new ObjectNotFindException("Фильм с именем: " + film.getName() + " не существует");
         }
         return filmStorage.update(film);
     }
@@ -41,7 +41,7 @@ public class FilmService {
         log.trace("Film findFilmById command");
         Optional<Film> optionalFilm = filmStorage.get(film.getId());
         if (optionalFilm.isEmpty()) {
-            throw new objectNotFindException("Фильм с именем: " + film.getName() + " не существует");
+            throw new ObjectNotFindException("Фильм с именем: " + film.getName() + " не существует");
         }
         return optionalFilm.get();
     }
@@ -54,11 +54,11 @@ public class FilmService {
     public Film addLike(long filmId, long userId) {
         log.trace("Film addLike command");
         if (userStorage.get(userId).isEmpty()) {
-            throw new objectNotFindException("Пользователя с id: " + userId + " не существует");
+            throw new ObjectNotFindException("Пользователя с id: " + userId + " не существует");
         }
         Optional<Film> optionalFilm = filmStorage.get(filmId);
         if (optionalFilm.isEmpty()) {
-            throw new objectNotFindException("Фильм с id: " + filmId + " не существует");
+            throw new ObjectNotFindException("Фильм с id: " + filmId + " не существует");
         }
         Film film = optionalFilm.get();
         Set<Long> filmLike = Optional.ofNullable(film.getLike())
@@ -71,11 +71,11 @@ public class FilmService {
     public Film removeLike(long filmId, long userId) {
         log.trace("Film removeLike command");
         if (userStorage.get(userId).isEmpty()) {
-            throw new objectNotFindException("Пользователя с id: " + userId + " не существует");
+            throw new ObjectNotFindException("Пользователя с id: " + userId + " не существует");
         }
         Optional<Film> optionalFilm = filmStorage.get(filmId);
         if (optionalFilm.isEmpty()) {
-            throw new objectNotFindException("Фильм с id: " + filmId + " не существует");
+            throw new ObjectNotFindException("Фильм с id: " + filmId + " не существует");
         }
         Film film = optionalFilm.get();
         Set<Long> filmLike = Optional.ofNullable(film.getLike())

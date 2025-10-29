@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.objectNotFindException;
+import ru.yandex.practicum.filmorate.exception.ObjectNotFindException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
@@ -132,7 +132,7 @@ public class UserService {
     private User userExistCheck(long id) {
         Optional<User> optionalUser = userStorage.get(id);
         if (optionalUser.isEmpty()) {
-            throw new objectNotFindException("Пользователя с id: " + id + " не существует");
+            throw new ObjectNotFindException("Пользователя с id: " + id + " не существует");
         }
         return optionalUser.get();
     }

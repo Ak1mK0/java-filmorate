@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.objectNotFindException;
+import ru.yandex.practicum.filmorate.exception.ObjectNotFindException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -43,7 +43,7 @@ public class FilmController {
         log.trace("---------Film getPopularFilm command---------");
         log.trace("---------Count = {}---------", count);
         if (count < 0) {
-            throw new objectNotFindException("Параметр count должен быть больше 0");
+            throw new ObjectNotFindException("Параметр count должен быть больше 0");
         }
         return filmService.getBestFilms(count);
     }

@@ -17,7 +17,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handlerObjectNotFind(objectNotFindException e) {
+    public ErrorResponse handlerObjectNotFind(ObjectNotFindException e) {
         return new ErrorResponse(e.getMessage());
     }
 
