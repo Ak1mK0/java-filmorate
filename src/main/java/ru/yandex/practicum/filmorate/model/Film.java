@@ -35,5 +35,5 @@ public class Film {
     @Min(value = 1,
             message = "Длительность не может быть отрицательно")
     private Long duration;
-    private Set<Long> like = new HashSet<>();
+    private Set<Long> like;
 }

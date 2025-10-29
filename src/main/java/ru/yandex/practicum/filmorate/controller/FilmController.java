@@ -41,6 +41,7 @@ public class FilmController {
     @GetMapping("/popular")
     public Collection<Film> getPopularFilm(@RequestParam(defaultValue = "10") long count) {
         log.trace("---------Film getPopularFilm command---------");
+        log.trace("---------Count = {}---------", count);
         if (count < 0) {
             throw new objectNotFindException("Параметр count должен быть больше 0");
         }
@@ -50,14 +51,15 @@ public class FilmController {
     @PutMapping("/{filmId}/like/{userId}")
     public Film addLike(@PathVariable long filmId, @PathVariable long userId) {
         log.trace("---------Film addLike command---------");
+        log.trace("---------ID фильма = {}, ID пользователя = {}---------", filmId, userId);
         return filmService.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
     public Film removeLike(@PathVariable long filmId, @PathVariable long userId) {
         log.trace("---------Film removeLike command---------");
+        log.trace("---------ID фильма = {}, ID пользователя = {}---------", filmId, userId);
         return filmService.removeLike(filmId, userId);
     }
-
 }
 

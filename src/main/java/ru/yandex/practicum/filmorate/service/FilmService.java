@@ -9,9 +9,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.interfaces.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +20,12 @@ public class FilmService {
     private final UserStorage userStorage;
 
     public Film addNewFilm(Film film) {
-        log.trace("---------Film addNewFilm command---------");
+        log.trace("Film addNewFilm command");
         return filmStorage.add(film);
     }
 
     public Film updateFilm(Film film) {
-        log.trace("---------Film updateFilm command---------");
+        log.trace("Film updateFilm command");
         if (filmStorage.get(film.getId()).isEmpty()) {
             throw new objectNotFindException("Фильм с именем: " + film.getName() + " не существует");
         }
@@ -35,12 +33,12 @@ public class FilmService {
     }
 
     public void removeFilm(Film film) {
-        log.trace("---------Film removeFilm command---------");
+        log.trace("Film removeFilm command");
         filmStorage.remove(film.getId());
     }
 
     public Film findFilmById(Film film) {
-        log.trace("---------Film findFilmById command---------");
+        log.trace("Film findFilmById command");
         Optional<Film> optionalFilm = filmStorage.get(film.getId());
         if (optionalFilm.isEmpty()) {
             throw new objectNotFindException("Фильм с именем: " + film.getName() + " не существует");
@@ -49,12 +47,12 @@ public class FilmService {
     }
 
     public Collection<Film> findAll() {
-        log.trace("---------Film findAll command---------");
+        log.trace("Film findAll command");
         return filmStorage.getAll();
     }
 
     public Film addLike(long filmId, long userId) {
-        log.trace("---------Film addLike command---------");
+        log.trace("Film addLike command");
         if (userStorage.get(userId).isEmpty()) {
             throw new objectNotFindException("Пользователя с id: " + userId + " не существует");
         }
@@ -63,13 +61,15 @@ public class FilmService {
             throw new objectNotFindException("Фильм с id: " + filmId + " не существует");
         }
         Film film = optionalFilm.get();
-        Set<Long> filmLike = film.getLike();
+        Set<Long> filmLike = Optional.ofNullable(film.getLike())
+                .orElse(new HashSet<>());
         filmLike.add(userId);
+        film.setLike(filmLike);
         return film;
     }
 
     public Film removeLike(long filmId, long userId) {
-        log.trace("---------Film removeLike command---------");
+        log.trace("Film removeLike command");
         if (userStorage.get(userId).isEmpty()) {
             throw new objectNotFindException("Пользователя с id: " + userId + " не существует");
         }
@@ -78,16 +78,22 @@ public class FilmService {
             throw new objectNotFindException("Фильм с id: " + filmId + " не существует");
         }
         Film film = optionalFilm.get();
-        Set<Long> filmLike = film.getLike();
+        Set<Long> filmLike = Optional.ofNullable(film.getLike())
+                .orElse(new HashSet<>());
         filmLike.remove(userId);
+        film.setLike(filmLike);
         return film;
     }
 
     public Collection<Film> getBestFilms(long count) {
-        log.trace("---------Film getBestFilms command---------");
+        log.trace("Film getBestFilms command");
         return filmStorage.getAll()
                 .stream()
-                .sorted((o1, o2) -> o2.getLike().size() - o1.getLike().size())
+                .sorted(Comparator
+                        .comparingInt((Film film) -> Optional.ofNullable(film.getLike())
+                                .map(Set::size).orElse(0))
+                        .reversed()
+                        .thenComparing(Film::getId))
                 .limit(count)
                 .collect(Collectors.toList());
     }

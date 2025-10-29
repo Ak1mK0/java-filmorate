@@ -29,5 +29,5 @@ public class User {
             beforeOrAfter = BeforeOrAfter.isAfter,
             message = "Дата не может быть в будущем")
     private LocalDate birthday;
-    private Set<Long> friends = new HashSet<>();
+    private Set<Long> friends;
 }
