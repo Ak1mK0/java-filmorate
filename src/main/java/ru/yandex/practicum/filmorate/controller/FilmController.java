@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -49,14 +50,16 @@ public class FilmController {
     }
 
     @PutMapping("/{filmId}/like/{userId}")
-    public Film addLike(@PathVariable long filmId, @PathVariable long userId) {
+    public Film addLike(@PathVariable @Positive long filmId,
+                        @PathVariable @Positive long userId) {
         log.trace("---------Film addLike command---------");
         log.trace("---------ID фильма = {}, ID пользователя = {}---------", filmId, userId);
         return filmService.addLike(filmId, userId);
     }
 
     @DeleteMapping("/{filmId}/like/{userId}")
-    public Film removeLike(@PathVariable long filmId, @PathVariable long userId) {
+    public Film removeLike(@PathVariable @Positive long filmId,
+                           @PathVariable @Positive long userId) {
         log.trace("---------Film removeLike command---------");
         log.trace("---------ID фильма = {}, ID пользователя = {}---------", filmId, userId);
         return filmService.removeLike(filmId, userId);

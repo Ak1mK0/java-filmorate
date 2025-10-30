@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -38,28 +39,31 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public Collection<User> getUserFriendList(@PathVariable long id) {
+    public Collection<User> getUserFriendList(@PathVariable @Positive long id) {
         log.trace("---------User getUserFriendList command---------");
         log.trace("---------ID пользователя = {}---------", id);
         return userService.getUserFriendList(id);
     }
 
     @GetMapping("/{id}/friends/common/{friendId}")
-    public Collection<User> getCommonUserFriendList(@PathVariable long id, @PathVariable long friendId) {
+    public Collection<User> getCommonUserFriendList(@PathVariable @Positive long id,
+                                                    @PathVariable @Positive long friendId) {
         log.trace("---------User getCommonUserFriendList command---------");
         log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
         return userService.getCommonUserFriendList(id, friendId);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addUserFriend(@PathVariable long id, @PathVariable long friendId) {
+    public void addUserFriend(@PathVariable @Positive long id,
+                              @PathVariable @Positive long friendId) {
         log.trace("---------User addUserFriend command---------");
         log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void removeUserFriend(@PathVariable long id, @PathVariable long friendId) {
+    public void removeUserFriend(@PathVariable @Positive long id,
+                                 @PathVariable @Positive long friendId) {
         log.trace("---------User removeUserFriend command---------");
         log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
         userService.removeFriend(id, friendId);
