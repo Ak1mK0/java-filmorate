@@ -35,23 +35,4 @@ public class Film {
             message = "Длительность не может быть отрицательно")
     private Long duration;
     private Set<Long> like;
-    private genreList[] genre;
-    private ratingMPA rating;
-
-    enum genreList {
-        comedy,
-        drama,
-        multiplication,
-        triller,
-        documental,
-        action
-    }
-
-    enum ratingMPA {
-        G,
-        PG,
-        PG_13,
-        R,
-        NC_17
-    }
 }
