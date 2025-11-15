@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.annotation.ValidateDate.BeforeOrAfter;
 import ru.yandex.practicum.filmorate.annotation.ValidateNoBlank;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.Set;
 
 @Data
@@ -30,5 +29,4 @@ public class User {
             message = "Дата не может быть в будущем")
     private LocalDate birthday;
     private Set<Long> friends;
-    private HashMap<Long, Boolean> confirmFriend;
 }
