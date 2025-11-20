@@ -32,7 +32,6 @@ public class FilmDto {
     @Min(value = 1,
             message = "Длительность не может быть отрицательно")
     private Integer duration;
-
     private MpaDto mpa;
     private Set<GenreDto> genres;
 }

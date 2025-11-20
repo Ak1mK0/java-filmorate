@@ -6,18 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewFilmResponse {
+public class UserResponse {
     private Long id;
+    private String email;
+    private String login;
     private String name;
-    private String description;
-    private LocalDate releaseDate;
-    private Integer duration;
-    private MpaDto mpa;
-    private Set<GenreDto> genres;
+    private LocalDate birthday;
 }

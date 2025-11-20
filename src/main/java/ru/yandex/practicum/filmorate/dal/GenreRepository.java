@@ -7,6 +7,8 @@ import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class GenreRepository extends BaseRepository<Genre> {
@@ -23,5 +25,16 @@ public class GenreRepository extends BaseRepository<Genre> {
     public Optional<Genre> findById(Integer id) {
         String query = "SELECT * FROM Genres WHERE genre_id = ?";
         return findOne(query, id);
+    }
+
+    public int countExist(Set<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        String idsText = ids.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+        String query = "SELECT COUNT(*) FROM Genres WHERE genre_id IN (" + idsText + ")";
+        return countAny(query);
     }
 }
