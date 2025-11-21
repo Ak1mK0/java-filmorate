@@ -22,6 +22,7 @@ public final class FilmMapper {
 
     public static Film mapToFilm(FilmDto request) {
         Film f = new Film();
+        f.setId(request.getId());
         f.setName(request.getName());
         f.setDescription(request.getDescription());
         f.setReleaseDate(request.getReleaseDate());

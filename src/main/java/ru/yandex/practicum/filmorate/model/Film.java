@@ -18,7 +18,6 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
-
     private Mpa mpa;
     private Set<Genre> genres;
 }

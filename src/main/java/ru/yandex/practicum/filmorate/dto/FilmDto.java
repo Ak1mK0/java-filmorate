@@ -14,6 +14,7 @@ import java.util.Set;
 @Data
 @Builder
 public class FilmDto {
+    private Long id;
     @NotNull(message = "Название фильма не может быть пустым")
     @NotBlank(message = "Название фильма не может быть пустым")
     private String name;

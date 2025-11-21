@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Optional;
 
@@ -21,6 +20,11 @@ public class UserRepository extends BaseRepository<User> {
     public Optional<User> findByLogin(String login) {
         String query = "SELECT * FROM Users WHERE user_login = ?";
         return findOne(query, login);
+    }
+
+    public Optional<User> findById(Long userId) {
+        String query = "SELECT * FROM Users WHERE user_id = ?";
+        return findOne(query, userId);
     }
 
     public User save(User user) {

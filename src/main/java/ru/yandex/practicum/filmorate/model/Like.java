@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Genre {
-    private Integer id;
-    private String name;
+public class Like {
+    private long userId;
+    private long filmId;
 }
