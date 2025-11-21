@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,5 +39,28 @@ public class UserRepository extends BaseRepository<User> {
                 user.getBirthday());
         user.setId(id);
         return user;
+    }
+
+    public User update(User user) {
+        String query = "UPDATE Users " +
+                "SET user_email = ?, " +
+                "user_login = ?, " +
+                "user_name = ?, " +
+                "user_birthday = ? " +
+                "WHERE user_id = ?";
+        update(query,
+                user.getEmail(),
+                user.getLogin(),
+                user.getName(),
+                user.getBirthday(),
+                user.getId());
+        return user;
+    }
+
+    public List<User> findAll() {
+        String query = "SELECT * " +
+                "FROM Users " +
+                "ORDER BY user_id";
+        return findMany(query);
     }
 }

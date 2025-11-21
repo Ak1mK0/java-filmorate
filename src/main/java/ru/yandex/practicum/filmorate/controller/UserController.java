@@ -10,6 +10,8 @@ import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.dto.UserResponse;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -23,5 +25,20 @@ public class UserController {
         log.debug("--Новый запрос createUser--");
         log.debug("User data: {}", userDto);
         return userService.createUser(userDto);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse updateUser(@RequestBody @Valid UserDto userDto) {
+        log.debug("--Новый запрос updateUser--");
+        log.debug("User data: {}", userDto);
+        return userService.updateUser(userDto);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> getAll() {
+        log.debug("--Новый запрос getAll--");
+        return userService.getAll();
     }
 }

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+    private Long id;
     @NotNull(message = "Адрес пользователя не может быть пустым")
     @Email(message = "Не корректный формат электронная почты")
     private String email;

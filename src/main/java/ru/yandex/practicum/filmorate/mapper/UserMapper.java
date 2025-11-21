@@ -14,6 +14,7 @@ public class UserMapper {
 
     public static User mapToUser(UserDto dto) {
         User u = new User();
+        u.setId(dto.getId());
         u.setEmail(dto.getEmail());
         u.setLogin(dto.getLogin());
         u.setBirthday(dto.getBirthday());
@@ -25,7 +26,7 @@ public class UserMapper {
         return u;
     }
 
-    public static UserResponse mapToNewUserResponse(User user) {
+    public static UserResponse mapToUserResponse(User user) {
         UserResponse dto = new UserResponse();
         dto.setId(user.getId());
         dto.setLogin(user.getLogin());
