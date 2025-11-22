@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Friends (
     user_id BIGINT NOT NULL,
     friend_id BIGINT NOT NULL,
-    friend_confirm BOOLEAN,
     PRIMARY KEY (user_id, friend_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (friend_id) REFERENCES Users(user_id) ON DELETE CASCADE,

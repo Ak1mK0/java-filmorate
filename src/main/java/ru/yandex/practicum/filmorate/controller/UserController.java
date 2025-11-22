@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.FriendResponse;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.dto.UserResponse;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -40,5 +41,37 @@ public class UserController {
     public List<UserResponse> getAll() {
         log.debug("--Новый запрос getAll--");
         return userService.getAll();
+    }
+
+    @PutMapping("/{userId}/friends/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public FriendResponse addFiendship(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос addFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        return userService.addFriendship(userId, friendId);
+    }
+
+    @GetMapping("/{userId}/friends")
+    @ResponseStatus(HttpStatus.OK)
+    public List<FriendResponse> getFiendList(@PathVariable long userId) {
+        log.debug("--Новый запрос getFiendList--");
+        log.debug("Пользователь: {}", userId);
+        return userService.findFriends(userId);
+    }
+
+    @GetMapping("/{userId}/friends/common/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<FriendResponse> getCommonFriends(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос addFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        return userService.getCommonFriends(userId, friendId);
+    }
+
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeFiendship(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос removeFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        userService.deleteFriendship(userId, friendId);
     }
 }
