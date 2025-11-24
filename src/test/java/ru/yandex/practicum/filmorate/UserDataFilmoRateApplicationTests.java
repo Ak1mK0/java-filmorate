@@ -27,7 +27,6 @@ class UserDataFilmoRateApplicationTests {
     String messageException;
     UserDto testUser;
     private Validator validator;
-    ;
 
     @BeforeEach
     public void beforeEach() {
