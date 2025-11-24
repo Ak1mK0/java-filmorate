@@ -54,7 +54,7 @@ public class UserService {
         userExistIdCheck(userId);
         userExistIdCheck(friendId);
         Friend friend = new Friend(userId, friendId);
-        if (friendRepository.findFriend(friend).isEmpty()) {
+        if (friendRepository.findFriend(friend).isEmpty() && userId != friendId) {
             friendRepository.save(friend);
 
             return FriendMapper.mapToResponse(friend);
@@ -62,7 +62,7 @@ public class UserService {
         } else {
             throw new ObjectAlreadyExistException("Дружба между пользователями "
                     + userId + " и " + friendId +
-                    "уже зарегистрирована");
+                    "не может быть реализована");
         }
     }
 

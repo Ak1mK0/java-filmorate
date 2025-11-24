@@ -25,7 +25,7 @@ public class LikeRepository extends BaseRepository<Like> {
         String query = "DELETE FROM Film_like " +
                 "WHERE film_id = ? " +
                 "AND user_id = ? ";
-        return delete(query, userId, filmId);
+        return delete(query, filmId, userId);
     }
 
     public Optional<Like> findOne(long filmId, long userId) {

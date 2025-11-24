@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FriendResponse {
     private long id;
-//    private long friendId;
 }

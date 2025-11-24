@@ -18,7 +18,7 @@ public class UserMapper {
         u.setEmail(dto.getEmail());
         u.setLogin(dto.getLogin());
         u.setBirthday(dto.getBirthday());
-        if (dto.getName() == null) {
+        if (dto.getName() == null || dto.getName().isBlank()) {
             u.setName(dto.getLogin());
         } else {
             u.setName(dto.getName());
