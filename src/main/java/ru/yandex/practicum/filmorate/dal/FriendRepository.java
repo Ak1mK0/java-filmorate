@@ -30,7 +30,7 @@ public class FriendRepository extends BaseRepository<Friend> {
         String query = "DELETE FROM Friends " +
                 "WHERE user_id = ? " +
                 "AND friend_id = ?";
-        delete(query, userId , friendId);
+        delete(query, userId, friendId);
     }
 
     public Optional<Friend> findFriend(Friend friend) {
