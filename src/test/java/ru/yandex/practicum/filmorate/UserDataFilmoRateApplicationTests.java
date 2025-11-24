@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.context.annotation.ComponentScan;
 import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
@@ -22,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @JdbcTest
 @AutoConfigureTestDatabase
-@ComponentScan(basePackages = "ru.yandex.practicum.filmorate")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class UserDataFilmoRateApplicationTests {
 
     String messageException;
     UserDto testUser;
     private Validator validator;
+    ;
 
     @BeforeEach
     public void beforeEach() {
@@ -54,19 +53,20 @@ class UserDataFilmoRateApplicationTests {
     void emptyUserNameValidatorTest() {
         testUser.setName("");
         User user = UserMapper.mapToUser(testUser);
-        assertEquals(user.getName(), user.getLogin());
+        assertEquals(user.getName(), testUser.getLogin());
     }
 
     @Test
     void blankUserNameValidatorTest() {
         testUser.setName(" ");
         User user = UserMapper.mapToUser(testUser);
-        assertEquals(user.getName(), user.getLogin());
+        assertEquals(user.getName(), testUser.getLogin());
     }
 
     @Test
     void emptyEmailValidatorTest() {
         testUser.setEmail(null);
+
         readException();
         assertEquals("Адрес пользователя не может быть пустым", messageException);
     }
@@ -74,6 +74,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void blankEmailValidatorTest() {
         testUser.setEmail(" ");
+
         readException();
         assertEquals("Не корректный формат электронная почты", messageException);
     }
@@ -81,6 +82,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void wrongEmailValidatorTest() {
         testUser.setEmail("TestEmail.ru");
+
         readException();
         assertEquals("Не корректный формат электронная почты", messageException);
     }
@@ -88,6 +90,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void wrongEmailConstructionValidatorTest() {
         testUser.setEmail("TestEmail@.ru");
+
         readException();
         assertEquals("Не корректный формат электронная почты", messageException);
     }
@@ -95,6 +98,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void blankLoginUserValidatorTest() {
         testUser.setLogin(" ");
+
         readException();
         assertEquals("Логин пользователя не должен содержит пробелы", messageException);
     }
@@ -102,6 +106,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void emptyLoginUserValidatorTest() {
         testUser.setLogin(null);
+
         readException();
         assertEquals("Логин пользователя не может быть пустым", messageException);
     }
@@ -109,6 +114,7 @@ class UserDataFilmoRateApplicationTests {
     @Test
     void wrongBirthdayUserValidatorTest() {
         testUser.setBirthday((LocalDate.now().plusDays(1)));
+
         readException();
         assertEquals("Дата не может быть в будущем", messageException);
     }
