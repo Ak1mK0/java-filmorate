@@ -16,7 +16,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @JdbcTest
 @AutoConfigureTestDatabase
 @ComponentScan("ru.yandex.practicum.filmorate")
@@ -75,4 +74,4 @@ class FilmServiceFilmoRateApplicationTests {
                 .extracting(FilmResponse::getName)
                 .containsExactly("Фильм3", "Фильм1", "Фильм2");
     }
-} 
+}

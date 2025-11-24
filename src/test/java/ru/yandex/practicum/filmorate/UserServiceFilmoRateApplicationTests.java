@@ -17,7 +17,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @JdbcTest
 @AutoConfigureTestDatabase
 @ComponentScan("ru.yandex.practicum.filmorate")
@@ -84,3 +83,4 @@ public class UserServiceFilmoRateApplicationTests {
                 .anyMatch(friend -> friend.getId() == 3);
     }
 }
+
