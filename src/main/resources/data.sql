@@ -22,20 +22,12 @@ VALUES
 ('Фильм3', 'Описание фильма 3', '2013-12-29', '30', '5'),
 ('Фильм4', 'Описание фильма 4', '1983-04-30', '48', '4');
 
-INSERT INTO Film_genres(film_id, genre_id)
-VALUES
-('1', '1'),
-('1', '2'),
-('2', '5'),
-('2', '1'),
-('3', '6');
-
 INSERT INTO Users(user_email, user_login, user_name, user_birthday)
 VALUES
-('u1.@mail.com', 'u1Login', 'u1Name', '1992-05-18'),
-('u2.@mail.com', 'u2Login', 'u2Name', '1998-8-24'),
-('u3.@mail.com', 'u3Login', 'u3Name', '2003-1-05');
+('user1@mail.com', 'user1Login', 'user1Name', '1999-04-30'),
+('user2@mail.com', 'user2Login', 'user2Name', '1999-05-30'),
+('user3@mail.com', 'user3Login', 'user3Name', '1999-06-30');
 
-INSERT INTO Film_like(user_id, film_id)
+INSERT INTO Friends(user_id, friend_id)
 VALUES
-('1', '2');
+('2', '3');
