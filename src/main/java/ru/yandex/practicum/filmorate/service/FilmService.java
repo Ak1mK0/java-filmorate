@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dal.*;
 import ru.yandex.practicum.filmorate.dto.*;
@@ -19,14 +17,12 @@ import static java.util.stream.Collectors.toSet;
 
 @Service
 public class FilmService {
-    private static final Logger log = LoggerFactory.getLogger(FilmService.class);
     private final FilmRepository filmRepository;
     private final UserRepository userRepository;
     private final RatingRepository ratingRepository;
     private final FilmGenresRepository filmGenresRepository;
     private final GenreRepository genreRepository;
     private final LikeRepository likeRepository;
-
 
     public FilmService(FilmRepository filmRepository, UserRepository userRepository,
                        RatingRepository ratingRepository, FilmGenresRepository filmGenresRepository,
@@ -86,8 +82,8 @@ public class FilmService {
         return filmList.stream()
                 .peek(film -> {
                     if (genreGroupByFilmId.containsKey(film.getId())) {
-                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream().
-                                map(GenreMapper::mapToGenre)
+                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream()
+                                .map(GenreMapper::mapToGenre)
                                 .collect(toSet());
                         film.setGenres(genres);
                     }
@@ -110,8 +106,8 @@ public class FilmService {
         return filmList.stream()
                 .peek(film -> {
                     if (genreGroupByFilmId.containsKey(film.getId())) {
-                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream().
-                                map(GenreMapper::mapToGenre)
+                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream()
+                                .map(GenreMapper::mapToGenre)
                                 .collect(toSet());
                         film.setGenres(genres);
                     }

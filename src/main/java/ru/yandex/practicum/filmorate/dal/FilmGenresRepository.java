@@ -1,14 +1,11 @@
 package ru.yandex.practicum.filmorate.dal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.model.FilmGenre;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,7 +16,6 @@ import java.util.Set;
 
 @Repository
 public class FilmGenresRepository extends BaseRepository<FilmGenre> {
-    private static final Logger log = LoggerFactory.getLogger(FilmService.class);
 
     public FilmGenresRepository(JdbcTemplate jdbc, RowMapper<FilmGenre> mapper, JdbcTemplate jdbc1) {
         super(jdbc, mapper);
@@ -29,7 +25,6 @@ public class FilmGenresRepository extends BaseRepository<FilmGenre> {
         if (ids == null || ids.isEmpty()) {
             return Collections.emptyList();
         }
-        log.debug("List: {}", ids);
         String symbol = String.join(",",
                 Collections.nCopies(ids.size(), "?"));
         String query = "SELECT fg.*, g.genre_name " +
