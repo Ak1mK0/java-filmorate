@@ -6,8 +6,6 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.filmorate.dal.mappers.FilmGenreRowMapper;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.FilmGenre;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -52,6 +50,7 @@ public class FilmGenresRepository extends BaseRepository<FilmGenre> {
                         ps.setLong(1, filmId);
                         ps.setLong(2, genreList.get(i).getId());
                     }
+
                     public int getBatchSize() {
                         return genreList.size();
                     }
