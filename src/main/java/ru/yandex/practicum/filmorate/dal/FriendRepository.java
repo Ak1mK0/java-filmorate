@@ -12,8 +12,6 @@ import java.util.Optional;
 
 @Repository
 public class FriendRepository extends BaseRepository<Friend> {
-    private static final Logger log = LoggerFactory.getLogger(FriendRepository.class);
-
 
     public FriendRepository(JdbcTemplate jdbc, RowMapper<Friend> mapper) {
         super(jdbc, mapper);

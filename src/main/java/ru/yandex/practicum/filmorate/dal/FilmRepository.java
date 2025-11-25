@@ -10,11 +10,9 @@ import java.util.Optional;
 
 @Repository
 public class FilmRepository extends BaseRepository<Film> {
-    private final FilmGenresRepository filmGenresRepository;
 
     public FilmRepository(JdbcTemplate jdbc, RowMapper<Film> mapper, FilmGenresRepository filmGenresRepository) {
         super(jdbc, mapper);
-        this.filmGenresRepository = filmGenresRepository;
     }
 
     public Film save(Film film) {
@@ -28,7 +26,6 @@ public class FilmRepository extends BaseRepository<Film> {
                 film.getDuration(),
                 film.getMpa().getId());
         film.setId(id);
-        filmGenresRepository.updateFilmGenre(film.getId(), film.getGenres());
         return film;
     }
 
@@ -47,7 +44,6 @@ public class FilmRepository extends BaseRepository<Film> {
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
-        filmGenresRepository.updateFilmGenre(film.getId(), film.getGenres());
     }
 
     public Optional<Film> getFilm(long id) {

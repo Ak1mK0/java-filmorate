@@ -14,7 +14,6 @@ import java.util.Optional;
 @Repository
 @Primary
 public class UserRepository extends BaseRepository<User> {
-    private static final Logger log = LoggerFactory.getLogger(UserRepository.class);
 
     public UserRepository(JdbcTemplate jdbc, RowMapper<User> mapper) {
         super(jdbc, mapper);

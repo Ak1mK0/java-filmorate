@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class FilmGenre {
     private Long filmId;
     private int genreId;
+    private String genreName;
 }

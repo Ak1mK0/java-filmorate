@@ -1,47 +1,61 @@
 package ru.yandex.practicum.filmorate.dal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import ru.yandex.practicum.filmorate.dal.mappers.FilmGenreRowMapper;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.FilmGenre;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @Repository
-public class FilmGenresRepository extends BaseRepository<Genre> {
+public class FilmGenresRepository extends BaseRepository<FilmGenre> {
+    private static final Logger log = LoggerFactory.getLogger(FilmService.class);
 
-
-    public FilmGenresRepository(JdbcTemplate jdbc, RowMapper<Genre> mapper) {
+    public FilmGenresRepository(JdbcTemplate jdbc, RowMapper<FilmGenre> mapper, JdbcTemplate jdbc1) {
         super(jdbc, mapper);
     }
 
-    public List<Genre> findFilmGenres(Long filmId) {
-        String query = "SELECT fg.genre_id, g.genre_name " +
-                "FROM FILM_GENRES AS fg " +
-                "LEFT JOIN Genres AS g ON fg.genre_id = g.genre_id " +
-                "WHERE fg.film_id = ?";
-        return findMany(query, filmId);
+    public List<FilmGenre> findFilmGenres(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        log.debug("List: {}", ids);
+        String symbol = String.join(",",
+                Collections.nCopies(ids.size(), "?"));
+        String query = "SELECT fg.*, g.genre_name " +
+                "FROM film_genres AS fg " +
+                "INNER JOIN genres AS g ON fg.genre_id = g.genre_id " +
+                "WHERE fg.film_id IN (" + symbol + ") " +
+                "ORDER BY fg.film_id ";
+        return findMany(query, ids.toArray());
     }
 
     public void updateFilmGenre(Long filmId, Set<Genre> genres) {
         delete(filmId);
-        if (genres != null && !genres.isEmpty()) {
-            StringBuilder query = new StringBuilder(
-                    "INSERT INTO Film_genres (film_id, genre_id) VALUES "
-            );
-            List<Object> params = new ArrayList<>();
-            int index = 0;
-            for (Genre genre : genres) {
-                if (index > 0) query.append(", ");
-                query.append("(?, ?)");
-                params.add(filmId);
-                params.add(genre.getId());
-                index++;
-            }
-            update(query.toString(), params.toArray());
-        }
+        ArrayList<Genre> genreList = new ArrayList<>(genres);
+        jdbc.batchUpdate(
+                "INSERT INTO Film_genres (film_id, genre_id) VALUES (?, ?)",
+                new BatchPreparedStatementSetter() {
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setLong(1, filmId);
+                        ps.setLong(2, genreList.get(i).getId());
+                    }
+                    public int getBatchSize() {
+                        return genreList.size();
+                    }
+                });
     }
 
     public boolean delete(long filmId) {

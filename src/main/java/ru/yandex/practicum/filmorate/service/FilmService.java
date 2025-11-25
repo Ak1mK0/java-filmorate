@@ -8,14 +8,14 @@ import ru.yandex.practicum.filmorate.dto.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFindException;
 import ru.yandex.practicum.filmorate.mapper.FilmMapper;
+import ru.yandex.practicum.filmorate.mapper.GenreMapper;
 import ru.yandex.practicum.filmorate.mapper.LikeMapper;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Like;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 public class FilmService {
@@ -44,6 +44,7 @@ public class FilmService {
 
         Film film = FilmMapper.mapToFilm(filmRequest);
         film = filmRepository.save(film);
+        filmGenresRepository.updateFilmGenre(film.getId(), film.getGenres());
         return FilmMapper.mapToFilmResponse(film);
     }
 
@@ -51,6 +52,7 @@ public class FilmService {
         filmValidator(filmRequest);
         Film film = FilmMapper.mapToFilm(filmRequest);
         filmRepository.update(film);
+        filmGenresRepository.updateFilmGenre(film.getId(), film.getGenres());
         return FilmMapper.mapToFilmResponse(film);
     }
 
@@ -60,7 +62,11 @@ public class FilmService {
             throw new ObjectNotFindException("Фильм с ID =" + id + " не существует");
         }
 
-        List<Genre> genres = filmGenresRepository.findFilmGenres(id);
+        List<FilmGenre> filmGenres = filmGenresRepository.findFilmGenres(List.of(id));
+        Set<Genre> genres = filmGenres.stream()
+                .map(GenreMapper::mapToGenre)
+                .collect(Collectors.toSet());
+
         Film film = optFilm.get();
         film.setGenres(new HashSet<>(genres));
 
@@ -68,23 +74,50 @@ public class FilmService {
     }
 
     public List<FilmResponse> getAll() {
-        return filmRepository.getAll().stream()
+        List<Film> filmList = filmRepository.getAll();
+        List<Long> ids = filmList.stream()
+                .map(Film::getId)
+                .toList();
+
+        List<FilmGenre> filmGenres = filmGenresRepository.findFilmGenres(ids);
+        Map<Long, List<FilmGenre>> genreGroupByFilmId = filmGenres.stream()
+                .collect(Collectors.groupingBy((FilmGenre::getFilmId)));
+
+        return filmList.stream()
                 .peek(film -> {
-                    List<Genre> genres = filmGenresRepository.findFilmGenres(film.getId());
-                    film.setGenres(new HashSet<>(genres));
+                    if (genreGroupByFilmId.containsKey(film.getId())) {
+                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream().
+                                map(GenreMapper::mapToGenre)
+                                .collect(toSet());
+                        film.setGenres(genres);
+                    }
                 })
                 .map(FilmMapper::mapToFilmResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
+
     public List<FilmResponse> getPopular(long count) {
-        return filmRepository.getPopular(count).stream()
+        List<Film> filmList = filmRepository.getPopular(count);
+        List<Long> ids = filmList.stream()
+                .map(Film::getId)
+                .toList();
+
+        List<FilmGenre> filmGenres = filmGenresRepository.findFilmGenres(ids);
+        Map<Long, List<FilmGenre>> genreGroupByFilmId = filmGenres.stream()
+                .collect(Collectors.groupingBy((FilmGenre::getFilmId)));
+
+        return filmList.stream()
                 .peek(film -> {
-                    List<Genre> genres = filmGenresRepository.findFilmGenres(film.getId());
-                    film.setGenres(new HashSet<>(genres));
+                    if (genreGroupByFilmId.containsKey(film.getId())) {
+                        Set<Genre> genres = genreGroupByFilmId.get(film.getId()).stream().
+                                map(GenreMapper::mapToGenre)
+                                .collect(toSet());
+                        film.setGenres(genres);
+                    }
                 })
                 .map(FilmMapper::mapToFilmResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public LikeResponse addLike(long filmId, long userId) {
