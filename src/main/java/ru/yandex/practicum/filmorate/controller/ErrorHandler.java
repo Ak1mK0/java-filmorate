@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.exception;
+package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -8,6 +8,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.yandex.practicum.filmorate.exception.ErrorResponse;
+import ru.yandex.practicum.filmorate.exception.InternalServerException;
+import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.ObjectNotFindException;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -31,6 +35,20 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handlerObjectNotFind(ObjectNotFindException e) {
         log.error("ObjectNotFindException: {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handlerObjectAlreadyExistException(ObjectAlreadyExistException e) {
+        log.error("ObjectAlreadyExistException: {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handlerInternalServerException(InternalServerException e) {
+        log.error("InternalServerException: {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
 

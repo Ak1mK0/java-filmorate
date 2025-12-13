@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +12,12 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class FilmResponse {
     private Long id;
-    private String email;
-    private String login;
     private String name;
-    private LocalDate birthday;
-    private Set<Long> friends;
+    private String description;
+    private LocalDate releaseDate;
+    private Integer duration;
+    private MpaDto mpa;
+    private Set<GenreDto> genres;
 }

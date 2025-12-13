@@ -4,34 +4,33 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.UserController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import ru.yandex.practicum.filmorate.dto.UserDto;
+import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.interfaces.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-class FilmorateUserApplicationTests {
+@JdbcTest
+@AutoConfigureTestDatabase
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
+class UserDataFilmoRateApplicationTests {
 
-    private Validator validator;
     String messageException;
-    User testUser;
-    UserStorage userStorage = new InMemoryUserStorage();
-    UserService userService = new UserService(userStorage);
-    UserController userController = new UserController(userService);
+    UserDto testUser;
+    private Validator validator;
 
     @BeforeEach
     public void beforeEach() {
-        testUser = User.builder()
+        testUser = UserDto.builder()
                 .email("Test@email.ru")
                 .login("login")
                 .name("name")
@@ -43,30 +42,24 @@ class FilmorateUserApplicationTests {
     }
 
     public void readException() {
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
-        for (ConstraintViolation<User> viol : violations) {
+        Set<ConstraintViolation<UserDto>> violations = validator.validate(testUser);
+        for (ConstraintViolation<UserDto> viol : violations) {
             messageException = viol.getMessage();
         }
     }
 
     @Test
-    void correctUserValidatorTest() {
-        userController.addNewUser(testUser);
-        assertTrue(userController.findAll().contains(testUser));
-    }
-
-    @Test
     void emptyUserNameValidatorTest() {
         testUser.setName("");
-        userController.addNewUser(testUser);
-        assertTrue(userController.findAll().contains(testUser));
+        User user = UserMapper.mapToUser(testUser);
+        assertEquals(user.getName(), testUser.getLogin());
     }
 
     @Test
     void blankUserNameValidatorTest() {
         testUser.setName(" ");
-        userController.addNewUser(testUser);
-        assertTrue(userController.findAll().contains(testUser));
+        User user = UserMapper.mapToUser(testUser);
+        assertEquals(user.getName(), testUser.getLogin());
     }
 
     @Test

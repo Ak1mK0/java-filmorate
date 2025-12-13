@@ -1,71 +1,77 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.dto.FriendResponse;
+import ru.yandex.practicum.filmorate.dto.UserDto;
+import ru.yandex.practicum.filmorate.dto.UserResponse;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.util.Collection;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping
-    public Collection<User> findAll() {
-        log.trace("---------User findAll command---------");
-        return userService.findAll();
-    }
-
     @PostMapping
-    public User addNewUser(@Valid @RequestBody User user) {
-        log.trace("---------User addNewUser command---------");
-        return userService.addNewUser(user);
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse createUser(@RequestBody @Valid UserDto userDto) {
+        log.debug("--Новый запрос createUser--");
+        log.debug("User data: {}", userDto);
+        return userService.createUser(userDto);
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user) {
-        log.trace("---------User updateUser command---------");
-        return userService.updateUser(user);
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse updateUser(@RequestBody @Valid UserDto userDto) {
+        log.debug("--Новый запрос updateUser--");
+        log.debug("User data: {}", userDto);
+        return userService.updateUser(userDto);
     }
 
-    @GetMapping("/{id}/friends")
-    public Collection<User> getUserFriendList(@PathVariable @Positive long id) {
-        log.trace("---------User getUserFriendList command---------");
-        log.trace("---------ID пользователя = {}---------", id);
-        return userService.getUserFriendList(id);
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> getAll() {
+        log.debug("--Новый запрос getAll--");
+        return userService.getAll();
     }
 
-    @GetMapping("/{id}/friends/common/{friendId}")
-    public Collection<User> getCommonUserFriendList(@PathVariable @Positive long id,
-                                                    @PathVariable @Positive long friendId) {
-        log.trace("---------User getCommonUserFriendList command---------");
-        log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
-        return userService.getCommonUserFriendList(id, friendId);
+    @PutMapping("/{userId}/friends/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public FriendResponse addFiendship(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос addFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        return userService.addFriendship(userId, friendId);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
-    public void addUserFriend(@PathVariable @Positive long id,
-                              @PathVariable @Positive long friendId) {
-        log.trace("---------User addUserFriend command---------");
-        log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
-        userService.addFriend(id, friendId);
+    @GetMapping("/{userId}/friends")
+    @ResponseStatus(HttpStatus.OK)
+    public List<FriendResponse> getFiendList(@PathVariable long userId) {
+        log.debug("--Новый запрос getFiendList--");
+        log.debug("Пользователь: {}", userId);
+        return userService.findFriends(userId);
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public void removeUserFriend(@PathVariable @Positive long id,
-                                 @PathVariable @Positive long friendId) {
-        log.trace("---------User removeUserFriend command---------");
-        log.trace("---------ID пользователя = {}, ID друга = {}---------", id, friendId);
-        userService.removeFriend(id, friendId);
+    @GetMapping("/{userId}/friends/common/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<FriendResponse> getCommonFriends(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос addFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        return userService.getCommonFriends(userId, friendId);
+    }
+
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeFiendship(@PathVariable long userId, @PathVariable long friendId) {
+        log.debug("--Новый запрос removeFiendship--");
+        log.debug("Пользователь: {}, друг {}", userId, friendId);
+        userService.deleteFriendship(userId, friendId);
     }
 }
